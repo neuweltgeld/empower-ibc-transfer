@@ -1,7 +1,4 @@
 # empower-ibc-transfer
-```
-
-```
 
 ## download binary (for ubuntu 22)
 
