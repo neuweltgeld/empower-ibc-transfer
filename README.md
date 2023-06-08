@@ -50,7 +50,7 @@ sudo mv $HOME/hermesd.service /etc/systemd/system/
 
 
 ```
-## Start Hermes service
+## Enable Hermes service
 
 ```
 sudo systemctl daemon-reload
@@ -187,11 +187,9 @@ hermes keys add --key-name osmo-wallet   --chain osmo-test-5 --mnemonic-file $HO
 ```
 sudo systemctl start hermesd && journalctl -u hermesd -f -o cat
 ```
+## If it works properly, you can proceed to the next steps.
 
-## osmosis test token faucet
-```
-https://faucet.osmotest5.osmosis.zone/
-```
+
 
 ## build osmosis binary (go 1.19 is required) To import the Osmosis wallet and execute transfers, you need to install Osmosis binary.
 ```
@@ -208,19 +206,25 @@ make install
 osmosisd keys add osmo-wallet --recover
 ```
 
-## update clients example
+## You need osmosis test token, you can use faucet
+```
+https://faucet.osmotest5.osmosis.zone/
+```
+
+## Update clients example
 ```
 hermes update client --host-chain circulus-1 --client 07-tendermint-1
 hermes update client --host-chain osmo-test-5 --client 07-tendermint-146
 ```
 
-## ibc transfer commands
+## Ibc transfer commands, you can check the txhash to be sure.
 ```
 empowerd tx ibc-transfer transfer transfer channel-0 osmowallet 111umpwr --from=empowerwallet --fees 200umpwr 
 osmosisd tx ibc-transfer transfer transfer channel-155 empowerwallet 5555uosmo --from=osmowallet --fees 5000uosmo --chain-id osmo-test-5 --keyring-backend test --node https://rpc.osmotest5.osmosis.zone:443
 ```
 
-## send fungible token between chains
+
+## Execute ft transfer between chains
 
 circulus-1 ---- osmo-test-5
 ```
