@@ -1,6 +1,12 @@
-# empower-ibc-transfer
+# Empower - Osmosis IBC transfer Hermes
+## This guide is for ubuntu 22
 
-## download binary (for ubuntu 22)
+This guide allows you to transfer IBC with osmosis osmo-test-5 chain over Empower circulus-1 chain installed server using Hermes. I am not responsible for any damages. Do not forget to take backups.
+If you encounter any error while executing the commands, you can tag me on discord and ask.
+
+irlandali_turist#7300 
+
+## Download Hermes Binary 
 
 ```
 cd $HOME
@@ -14,13 +20,15 @@ tar -C $HOME/.hermes/bin/ -vxzf hermes-${version}-x86_64-unknown-linux-gnu.tar.g
 rm hermes-$version-x86_64-unknown-linux-gnu.tar.gz
 
 ```
-
+## Edit PATH
 ```
 echo "export PATH=$PATH:$HOME/.hermes/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 hermes version
 ```
+
+## Create hermes service file
 
 ```
 tee $HOME/hermesd.service > /dev/null <<EOF
@@ -42,16 +50,17 @@ sudo mv $HOME/hermesd.service /etc/systemd/system/
 
 
 ```
-## start service
+## Start Hermes service
 
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable hermesd
 ```
 
-## create hermes config // change moniker name
+## Create hermes config // change memo_prefix for each chain
 
 ```
+tee $HOME/.hermes/config.toml > /dev/null <<EOF
 [global]
 log_level = 'debug'
 [mode]
@@ -91,7 +100,7 @@ trusted_node = false
 batch_delay = '500ms'   # hermes default 500ms
 
 account_prefix = 'osmo'
-key_name = 'OSMO_TEST_REL_WALLET'
+key_name = 'osmo-wallet'
 store_prefix = 'ibc'
 
 default_gas = 800000
@@ -127,7 +136,7 @@ trusted_node = false
 batch_delay = '500ms'
 
 account_prefix = 'empower'
-key_name = 'EMPOWER_TEST_REL_WALLET'
+key_name = 'empower-wallet'
 store_prefix = 'ibc'
 
 default_gas = 800000
@@ -149,29 +158,42 @@ policy = 'allow'
 list = [
   ['transfer', 'channel-0'], # osmosis channel-155
 ]
-
+EOF
 
 ```
+
 ## test config
 ```
 hermes config validate
 ```
 
-## add relayer wallet
+## Add relayer wallets mnemonics. Enter your mnemonics after every command
 ```
-read mnemonic && echo "$mnemonic" > $HOME/.hermes/EMPOWER_TEST_REL_WALLET.txt
-read mnemonic && echo "$mnemonic" > $HOME/.hermes/OSMO_TEST_REL_WALLET.txt
+read mnemonic && echo "$mnemonic" > $HOME/.hermes/empower-wallet.txt
+## enter your mnemonics
+```
+```
+read mnemonic && echo "$mnemonic" > $HOME/.hermes/osmo-wallet.txt
+## enter your mnemonics
 ```
 
+## Add wallet addresses
 ```
-hermes keys add --key-name EMPOWER_TEST_REL_WALLET --chain circulus-1 --mnemonic-file $HOME/.hermes/EMPOWER_TEST_REL_WALLET.txt
-hermes keys add --key-name OSMO_TEST_REL_WALLET   --chain osmo-test-5      --mnemonic-file $HOME/.hermes/OSMO_TEST_REL_WALLET.txt
+hermes keys add --key-name empower-wallet --chain circulus-1 --mnemonic-file $HOME/.hermes/empower-wallet.txt
+hermes keys add --key-name osmo-wallet   --chain osmo-test-5 --mnemonic-file $HOME/.hermes/osmo-wallet.txt
 ```
+
+## Start hermes
 ```
 sudo systemctl start hermesd && journalctl -u hermesd -f -o cat
 ```
 
-## build osmosis binary (go 1.19 is required)
+## osmosis test token faucet
+```
+https://faucet.osmotest5.osmosis.zone/
+```
+
+## build osmosis binary (go 1.19 is required) To import the Osmosis wallet and execute transfers, you need to install Osmosis binary.
 ```
 cd $HOME
 git clone https://github.com/osmosis-labs/osmosis
@@ -180,30 +202,10 @@ git checkout v15.1.2
 make install
 ```
 
-## import osmosis wallet
+## Import osmosis wallet or remove --recover flag to create new one. Do not forget to save mnemonics.
 
 ```
-osmosisd keys add OSMO_TEST_REL_WALLET --recover
-```
-
-## send ft token
-
-circulus-1 ---- osmo-test-5
-```
-hermes tx ft-transfer   --number-msgs 10   --key-name EMPOWER_TEST_REL_WALLET   --receiver osmo1s492paw57du0kpudjr7pfwt350cprma7rq3vt6   --denom umpwr   --timeout-seconds 30   --dst-chain osmo-test-5   --src-chain circulus-1   --src-port transfer   --src-channel channel-0   --amount 200
-  
-```
-osmo-test-5 ---- circulus-1
-
-```
-hermes tx ft-transfer   --number-msgs 10   --key-name OSMO_TEST_REL_WALLET   --receiver empower1s492paw57du0kpudjr7pfwt350cprma7hhxh8k   --denom uosmo   --timeout-seconds 30   --dst-chain circulus-1   --src-chain osmo-test-5   --src-port transfer   --src-channel channel-155   --amount 2000
-
-```
-
-ibc transfer 
-```
-empowerd tx ibc-transfer transfer transfer channel-0 osmowallet 111umpwr --from=empowerwallet --fees 200umpwr 
-osmosisd tx ibc-transfer transfer transfer channel-155 empowerwallet 5555uosmo --from=osmowallet --fees 5000uosmo --chain-id osmo-test-5 --keyring-backend test --node https://rpc.osmotest5.osmosis.zone:443
+osmosisd keys add osmo-wallet --recover
 ```
 
 ## update clients example
@@ -211,3 +213,24 @@ osmosisd tx ibc-transfer transfer transfer channel-155 empowerwallet 5555uosmo -
 hermes update client --host-chain circulus-1 --client 07-tendermint-1
 hermes update client --host-chain osmo-test-5 --client 07-tendermint-146
 ```
+
+## ibc transfer commands
+```
+empowerd tx ibc-transfer transfer transfer channel-0 osmowallet 111umpwr --from=empowerwallet --fees 200umpwr 
+osmosisd tx ibc-transfer transfer transfer channel-155 empowerwallet 5555uosmo --from=osmowallet --fees 5000uosmo --chain-id osmo-test-5 --keyring-backend test --node https://rpc.osmotest5.osmosis.zone:443
+```
+
+## send fungible token between chains
+
+circulus-1 ---- osmo-test-5
+```
+hermes tx ft-transfer   --key-name empower-wallet   --receiver osmo1s492paw57du0kpudjr7pfwt350cprma7rq3vt6   --denom umpwr   --timeout-seconds 30   --dst-chain osmo-test-5   --src-chain circulus-1   --src-port transfer   --src-channel channel-0   --amount 200
+  
+```
+osmo-test-5 ---- circulus-1
+
+```
+hermes tx ft-transfer  --key-name osmo-wallet   --receiver empower1s492paw57du0kpudjr7pfwt350cprma7hhxh8k   --denom uosmo   --timeout-seconds 30   --dst-chain circulus-1   --src-chain osmo-test-5   --src-port transfer   --src-channel channel-155   --amount 2000
+
+```
+
