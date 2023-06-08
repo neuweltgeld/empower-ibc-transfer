@@ -1,8 +1,11 @@
 # Empower - Osmosis IBC transfer Hermes
 ## This guide is for ubuntu 22
 
+For IBC transfer it is not mandatory to install hermes as the channels are open, you can use the transfer commands at the end of the repo after installing the testnet binary.
+Hermes installation is included as a tutorial guide.
 This guide allows you to transfer IBC with osmosis osmo-test-5 chain over Empower circulus-1 chain installed server using Hermes. I am not responsible for any damages. Do not forget to take backups.
 If you encounter any error while executing the commands, you can tag me on discord and ask.
+
 
 irlandali_turist#7300 
 
