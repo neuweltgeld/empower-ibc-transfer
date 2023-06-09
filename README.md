@@ -305,8 +305,20 @@ empowerd tx ibc-transfer transfer transfer channel-0 osmowallet 111umpwr --from=
 osmosisd tx ibc-transfer transfer transfer channel-155 empowerwallet 5555uosmo --from=osmowallet --fees 5000uosmo --chain-id osmo-test-5 --keyring-backend test --node https://rpc.osmotest5.osmosis.zone:443
 ```
 
+## The codes below are for Empower to Osmosis transfer only. For transfers with other networks 
+```
+--key-name
+--denom
+--src-channel (source channel)
+--src-chain (source chain)
+--dst-chain (target chain)
+```
+You can use it by changing the flags.
 
-## Execute ft transfer between chains
+You can access this information from the config content or from the [link](https://github.com/cosmos/chain-registry/pull/2293/files)
+
+
+## Execute ft transfer between chains. 
 
 circulus-1 ---- osmo-test-5
 ```
@@ -319,3 +331,19 @@ osmo-test-5 ---- circulus-1
 hermes tx ft-transfer  --key-name osmo-wallet   --receiver empower1s492paw57du0kpudjr7pfwt350cprma7hhxh8k   --denom uosmo   --timeout-seconds 30   --dst-chain circulus-1   --src-chain osmo-test-5   --src-port transfer   --src-channel channel-155   --amount 2000
 
 ```
+
+## How to do half back task?
+
+Empower asks you to send back half of the $MPWR token you sent with IBC. You can try this way for this.
+
+1.With Hermes, you sent the $MPWR token to the Osmosis test network.
+2.Now check your osmosis wallet address at https://testnet.mintscan.io/osmosis-testnet and select "All Assets" from the "Asset Type" tab.
+![image](https://github.com/neuweltgeld/empower-ibc-transfer/assets/101174090/2fb94e0f-0b40-4dd0-8263-c267859aca56)
+3.Now you can see your IBC tokens
+![image](https://github.com/neuweltgeld/empower-ibc-transfer/assets/101174090/11fd2102-bcaa-4726-a8cd-7411db80f8e1)
+4.Check the amount of tokens you are sending and identify the IBC token.
+![image](https://github.com/neuweltgeld/empower-ibc-transfer/assets/101174090/24044511-57e9-4292-884a-8b9c90271044)
+5.The IBC address of the token I sent is ibc/E0FDA81C892EEA14C2398519260AA706A068B36AE5BE8AE9FAD8EB1540A6E02E
+6.Write this address in the --denom flag you would write when following the osmo-test-5 ---- circulus-1 hermes step and change the --amount to half.
+7.Check the txhash in the osmosis explorer to check if the transmission has been established.
+
