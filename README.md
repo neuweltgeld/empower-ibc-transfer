@@ -336,14 +336,22 @@ hermes tx ft-transfer  --key-name osmo-wallet   --receiver empower1s492paw57du0k
 
 Empower asks you to send back half of the $MPWR token you sent with IBC. You can try this way for this.
 
-1.With Hermes, you sent the $MPWR token to the Osmosis test network.
-2.Now check your osmosis wallet address at https://testnet.mintscan.io/osmosis-testnet and select "All Assets" from the "Asset Type" tab.
+* With Hermes, you sent the $MPWR token to the Osmosis test network.
+* Now check your osmosis wallet address at https://testnet.mintscan.io/osmosis-testnet and select "All Assets" from the "Asset Type" tab.
+
 ![image](https://github.com/neuweltgeld/empower-ibc-transfer/assets/101174090/2fb94e0f-0b40-4dd0-8263-c267859aca56)
-3.Now you can see your IBC tokens
+
+* Now you can see your IBC tokens
+
 ![image](https://github.com/neuweltgeld/empower-ibc-transfer/assets/101174090/11fd2102-bcaa-4726-a8cd-7411db80f8e1)
-4.Check the amount of tokens you are sending and identify the IBC token.
+
+* Check the amount of tokens you are sending and identify the IBC token.
+
 ![image](https://github.com/neuweltgeld/empower-ibc-transfer/assets/101174090/24044511-57e9-4292-884a-8b9c90271044)
-5.The IBC address of the token I sent is ibc/E0FDA81C892EEA14C2398519260AA706A068B36AE5BE8AE9FAD8EB1540A6E02E
-6.Write this address in the --denom flag you would write when following the osmo-test-5 ---- circulus-1 hermes step and change the --amount to half.
-7.Check the txhash in the osmosis explorer to check if the transmission has been established.
+
+* The IBC address of the token I sent is ibc/E0FDA81C892EEA14C2398519260AA706A068B36AE5BE8AE9FAD8EB1540A6E02E
+
+* Write this address in the --denom flag you would write when following the osmo-test-5 ---- circulus-1 hermes step and change the --amount to half.
+
+* Check the txhash in the osmosis explorer to check if the transmission has been established.
 
