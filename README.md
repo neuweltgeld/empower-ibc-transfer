@@ -1,5 +1,5 @@
 # Empower - Osmosis - Stars - Cosmos IBC transfer Hermes
-## This guide is for ubuntu 22
+
 
 For IBC transfer it is not mandatory to install hermes as the channels are open, you can use the transfer commands at the end of the repo after installing the testnet binary.
 Hermes installation is included as a tutorial guide.
@@ -9,6 +9,7 @@ If you encounter any error while executing the commands, you can tag me on disco
 
 irlandali_turist#7300 
 
+## For Ubuntu 22
 ## Download Hermes Binary 
 
 ```
@@ -23,6 +24,28 @@ tar -C $HOME/.hermes/bin/ -vxzf hermes-${version}-x86_64-unknown-linux-gnu.tar.g
 rm hermes-$version-x86_64-unknown-linux-gnu.tar.gz
 
 ```
+## For Ubuntu 20, start from here
+
+```
+curl https://sh.rustup.rs -sSf | sh
+source "$HOME/.cargo/env"
+```
+
+```
+git clone https://github.com/informalsystems/hermes.git
+cd hermes
+cargo build --release --bin hermes
+```
+
+```
+cd $HOME
+mkdir -p $HOME/.hermes/bin
+```
+
+```
+mv $HOME/hermes/target/release/hermes $HOME/.hermes/bin/
+```
+
 ## Edit PATH
 ```
 echo "export PATH=$PATH:$HOME/.hermes/bin" >> $HOME/.bash_profile
