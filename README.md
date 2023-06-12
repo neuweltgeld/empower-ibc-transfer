@@ -103,7 +103,7 @@ trusted_node = false
 batch_delay = '500ms'   # hermes default 500ms
 
 account_prefix = 'osmo'
-key_name = 'OSMO_TEST_REL_WALLET'
+key_name = 'osmo-wallet'
 store_prefix = 'ibc'
 
 default_gas = 800000
@@ -138,7 +138,7 @@ trusted_node = false
 batch_delay = '500ms'
 
 account_prefix = 'empower'
-key_name = 'EMPOWER_TEST_REL_WALLET'
+key_name = 'empower-wallet'
 store_prefix = 'ibc'
 
 default_gas = 800000
