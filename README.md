@@ -253,8 +253,8 @@ policy = 'allow'
 list = [
   ['transfer', 'channel-459'], # circulus-1 channel-2
 ]
-EOF
 
+EOF
 ```
 
 ## test config
