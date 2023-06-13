@@ -41,7 +41,31 @@ Use to send balance to multiple accounts.
 ```
 empowerd tx bank multi-send wallet empower1falklhdx5yd2lunm409z0qn8kyq2zcclese6em empower1s492paw57du0kpudjr7pfwt350cprma7hhxh8k 100umpwr --fees 200umpwr
 ```
+## empowerd tx staking create-validator (optional)
+Used to create a validator. Change ``Moniker`` name.
 
+```
+empowerd tx staking create-validator \
+--amount=1000000umpwr \
+--pubkey=$(empowerd tendermint show-validator) \
+--moniker="Moniker" \
+--chain-id=circulus-1 \
+--commission-rate=0.10 \
+--commission-max-rate=0.20 \
+--commission-max-change-rate=0.01 \
+--min-self-delegation=1 \
+--from=wallet \
+--gas-prices=0.1umpwr \
+--gas-adjustment=1.5 \
+--gas=auto \
+-y 
+```
+
+## empowerd tx staking edit-validator (optional)
+Used to edit Validator info. For example change value of ```--details`` flag.
+```
+empowerd tx staking edit-validator --from=wallet --details="Geralt" --gas-prices=0.1umpwr --gas-adjustment=1.5 --gas=auto
+```
 
 ## empowerd tx staking delegate
 Use to stake MPWR to a validator.
@@ -71,31 +95,7 @@ empowerd tx staking cancel-unbond empowervaloper1s492paw57du0kpudjr7pfwt350cprma
  ```
 
 
-## empowerd tx staking create-validator (optional)
-Used to create a validator. Change ``Moniker`` name.
 
-```
-empowerd tx staking create-validator \
---amount=1000000umpwr \
---pubkey=$(empowerd tendermint show-validator) \
---moniker="Moniker" \
---chain-id=circulus-1 \
---commission-rate=0.10 \
---commission-max-rate=0.20 \
---commission-max-change-rate=0.01 \
---min-self-delegation=1 \
---from=wallet \
---gas-prices=0.1umpwr \
---gas-adjustment=1.5 \
---gas=auto \
--y 
-```
-
-## empowerd tx staking edit-validator (optional)
-Used to edit Validator info. For example change value of ```--details`` flag.
-```
-empowerd tx staking edit-validator --from=wallet --details="Geralt" --gas-prices=0.1umpwr --gas-adjustment=1.5 --gas=auto
-```
 
 
 ## empowerd tx distribution withdraw-all-rewards 
